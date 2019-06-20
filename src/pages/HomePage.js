@@ -32,19 +32,21 @@ const HomePage = ({ client, history }) => {
         setCheckUserLoading(false)
       })
       .catch(() => history.push("/"))
-  }, [])
+  }, [client, history])
 
   const handleSearch = () => {
     setLoading(true)
 
-    let searchParam
+    const searchTypes = {
+      all: "/",
+      random: "/random",
+      id: `/${searchValue}`
+    }
 
-    if (searchType === "all") searchParam = "/"
-    if (searchType === "random") searchParam = "/random"
-    if (searchType === "id") searchParam = `/${searchValue}`
+    const searchParam = searchTypes[searchType]
 
     api
-      .get(`${searchParam}?per_page=${rowsPerPage}&page=${page}`)
+      .get(`${searchParam}?per_page=${rowsPerPage}&page=1`)
       .then(({ data }) => {
         setLoading(false)
         setApiData(data)
@@ -55,14 +57,35 @@ const HomePage = ({ client, history }) => {
   React.useEffect(() => {
     if (page === 1) return
 
-    handleSearch()
-  }, [handleSearch, page])
+    const handleSearch = () => {
+      setLoading(true)
 
-  if (checkUserLoading) return (
-    <div className={styles.loadingContainer}>
-      <p>Carregando...</p>
-    </div>
-  )
+      const searchTypes = {
+        all: "/",
+        random: "/random",
+        id: `/${searchValue}`
+      }
+
+      const searchParam = searchTypes[searchType]
+
+      api
+        .get(`${searchParam}?per_page=${rowsPerPage}&page=${page}`)
+        .then(({ data }) => {
+          setLoading(false)
+          setApiData(data)
+        })
+        .catch((e) => setLoading(false))
+    }
+
+    handleSearch()
+  }, [page])
+
+  if (checkUserLoading)
+    return (
+      <div className={styles.loadingContainer}>
+        <p>Carregando...</p>
+      </div>
+    )
 
   return (
     <div className={styles.pageContainer}>
@@ -166,11 +189,7 @@ const HomePage = ({ client, history }) => {
 
       {apiData.length > 0 && !loading && (
         <button
-          onClick={() => {
-            setPage(page + 1)
-
-            handleSearch()
-          }}
+          onClick={() => setPage(page + 1)}
           className={styles.paginationButton}
         >
           Próxima Página
