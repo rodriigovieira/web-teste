@@ -1,0 +1,38 @@
+.cardContainer {
+  display: flex;
+  flex-direction: row;
+  min-height: 200px;
+  min-width: 300px;
+  padding: 1.5%;
+  margin: 2% 1%;
+  border-radius: 5px;
+  background-color: white;
+  text-align: center;
+  flex: 0 0 25%;
+}
+
+.cardContainer p {
+  font-size: 16px;
+  text-align: center;
+}
+
+.image {
+  max-height: 200px;
+  margin: 2%;
+  min-width: 80px;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  margin-bottom: 2%;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.cardDesc {
+  font-size: 14px;
+}
