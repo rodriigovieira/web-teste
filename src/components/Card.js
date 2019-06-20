@@ -5,11 +5,13 @@ import styles from "./Card.module.css"
 const Card = ({ data }) => {
   return (
     <div className={styles.cardContainer}>
-      <img
-        className={styles.image}
-        src={data.image_url}
-        alt="Imagem"
-      />
+      {data.image_url && (
+        <img
+          className={styles.image}
+          src={data.image_url}
+          alt="Imagem"
+        />
+      )}
 
       <div className={styles.contentContainer}>
         <span className={styles.cardTitle}>{data.name}</span>

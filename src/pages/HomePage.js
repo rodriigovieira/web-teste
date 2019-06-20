@@ -38,16 +38,19 @@ const HomePage = ({ client, history }) => {
     setLoading(true)
 
     const searchTypes = {
-      all: "/",
-      random: "/random",
-      id: `/${searchValue}`
+      all: "/?page=1",
+      random: "/random?page=1",
+      id: `/${searchValue}?page=1`
     }
 
-    const searchParam = searchTypes[searchType]
+    let searchParam = searchTypes[searchType]
+
+    if (rowsPerPage) searchParam += `&per_page=${rowsPerPage}`
 
     api
-      .get(`${searchParam}?per_page=${rowsPerPage}&page=1`)
+      .get(`${searchParam}`)
       .then(({ data }) => {
+        console.log(data)
         setLoading(false)
         setApiData(data)
       })
@@ -78,7 +81,7 @@ const HomePage = ({ client, history }) => {
     }
 
     handleSearch()
-  }, [page])
+  }, [page, rowsPerPage, searchType, searchValue])
 
   if (checkUserLoading)
     return (
