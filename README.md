@@ -14,6 +14,8 @@ O aplicativo possui:
 - Feedback para diversos erros e feedback para carregamento
 - Checagem automática se o usuário já está logado (se estiver, é redirecionado)
 
+O website pode ser acessado nesse endereço: https://zen-joliot-d94cc9.netlify.com. Alternativamente, é possível instalá-lo localmente.
+
 # Instalação
 
 Os passos abaixo assumem que você possui o yarn instalado globalmente. Caso não possua, basta apenas executar `npm -g install yarn`.
