@@ -1,4 +1,7 @@
 import React from "react"
+import { withApollo } from "react-apollo"
+
+import meQuery from "../services/operations/me"
 
 import styles from "./HomePage.module.css"
 
@@ -6,17 +9,30 @@ import Card from "../components/Card"
 
 import api from "../services/api"
 
-const HomePage = () => {
+const HomePage = ({ client, history }) => {
   const [searchValue, setSearchValue] = React.useState("")
   const [searchType, setSearchType] = React.useState("all")
   const [searchTypeText, setSearchTypeText] = React.useState(
     "Buscar Todas"
   )
+
   const [rowsPerPage, setRowsPerPage] = React.useState(25)
   const [page, setPage] = React.useState(1)
 
   const [loading, setLoading] = React.useState(false)
   const [apiData, setApiData] = React.useState([])
+  const [checkUserLoading, setCheckUserLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    client
+      .query({ query: meQuery })
+      .then(({ data }) => {
+        if (!data.me.id) history.push("/")
+
+        setCheckUserLoading(false)
+      })
+      .catch(() => history.push("/"))
+  }, [])
 
   const handleSearch = () => {
     setLoading(true)
@@ -40,7 +56,13 @@ const HomePage = () => {
     if (page === 1) return
 
     handleSearch()
-  }, [page])
+  }, [handleSearch, page])
+
+  if (checkUserLoading) return (
+    <div className={styles.loadingContainer}>
+      <p>Carregando...</p>
+    </div>
+  )
 
   return (
     <div className={styles.pageContainer}>
@@ -158,4 +180,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default withApollo(HomePage)
